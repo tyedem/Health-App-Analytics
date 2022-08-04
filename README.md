@@ -1,6 +1,6 @@
 # Health-App-Usage-Analytics: A Case Study
 
-![Fitbit](/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Images/pexels-joshua-miranda-fitbit.png)
+![Fitbit](Images/pexels-joshua-miranda-fitbit.png)
 
 *[Close-Up of a Smartphone Displaying a Fitness App Statistics](https://www.pexels.com/photo/close-up-of-a-smartphone-screen-displaying-a-fitness-app-statistics-6298479/) | [Pexels Licensed](https://www.pexels.com/license/)*
 
