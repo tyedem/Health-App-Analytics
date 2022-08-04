@@ -14,6 +14,7 @@ library(lubridate)
 library(flipTime)
 
 # Load CSVs
+daily_activity <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailyActivity_merged.csv")
 heartrate_seconds <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/heartrate_seconds_merged.csv")
 hourly_calories <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/hourlyCalories_merged.csv")
 hourly_intensities <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/hourlyIntensities_merged.csv")
@@ -125,7 +126,7 @@ View(minute_steps_wide)
 View(sleep_day)
 View(weight_log_info)
 
-# Convert Time column to datetime - Reference - https://www.displayr.com/r-date-conversion/
+# Convert time column to datetime - Reference - https://www.displayr.com/r-date-conversion/
 heartrate_seconds$Time <- AsDateTime(heartrate_seconds$Time)
 hourly_calories$ActivityHour <- AsDateTime(hourly_calories$ActivityHour)
 hourly_intensities$ActivityHour <- AsDateTime(hourly_intensities$ActivityHour)
@@ -141,7 +142,7 @@ minute_steps_wide$ActivityHour <- AsDateTime(minute_steps_wide$ActivityHour)
 sleep_day$SleepDay <- AsDateTime(sleep_day$SleepDay)
 weight_log_info$Date <- AsDateTime(weight_log_info$Date)
 
-#Write to csv
+# Write to csv to load in Big Query database
 write_csv(heartrate_seconds, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/heartrate_seconds_dt.csv")
 write_csv(hourly_calories, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/hourlyCalories_dt.csv")
 write_csv(hourly_intensities, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/hourlyIntensities_dt.csv")
@@ -156,3 +157,113 @@ write_csv(minute_steps_narrow, file="/Users/tyesondemets/Desktop/Git/Health-App-
 write_csv(minute_steps_wide, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/minuteStepsWide_dt.csv")
 write_csv(sleep_day, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/sleepDay_dt.csv")
 write_csv(weight_log_info, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/weightLogInfo_dt.csv")
+
+# Explore daily_activity
+
+#Check head
+head(daily_activity)
+
+# Check column names
+colnames(daily_activity)
+
+# Check distinct IDs - 33
+n_distinct(daily_activity$Id)
+
+# Check number of rows - 940
+nrow(daily_activity)
+
+# Select summary stats - daily_activity stats
+daily_activity %>% 
+  select(TotalSteps,
+         TotalDistance,
+         SedentaryMinutes) %>%
+  summary()
+
+# Explore sleep_day
+
+# Check head
+head(sleep_day)
+
+# Check column names
+colnames(sleep_day)
+
+# sleep_day stats
+sleep_day %>% 
+  select(TotalSleepRecords,
+         TotalMinutesAsleep,
+         TotalTimeInBed) %>% 
+  summary()
+
+# Explore minute_mets_narrow
+
+# Check head
+head(minute_mets_narrow)
+
+# Check colnames
+colnames(minute_mets_narrow)
+
+# Check rows
+nrow(minute_mets_narrow)
+
+# Check stats
+minute_mets_narrow %>% 
+  select(ActivityMinute,
+         METs) %>% 
+  summary()
+
+# Exploring visualizations
+
+#Visualize daily_activity
+ggplot(data=daily_activity, aes(x=TotalSteps, y=SedentaryMinutes)) + geom_point()
+
+# Visualize sleep_day
+ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y=TotalTimeInBed)) + geom_point()
+
+ggplot(data=minute_mets_narrow, aes(x=METs)) + geom_bar()
+
+
+# Merge datasets - daily_activity, sleep_day
+combined_df <- merge(daily_activity, sleep_day, by="Id")
+
+# Check rows - 12348
+nrow(combined_df)
+
+# Merge datasets - combined_df, minute_mets_narrow
+combined_df <- merge(combined_df, minute_mets_narrow, by="Id")
+
+# Check distinct IDs - 24
+n_distinct(combined_df$Id)
+
+# Check rows - 12441
+nrow(combined_df)
+
+subset(x=combined_df, Id=="1503960366", select= c("TotalSteps", "Calories"))
+
+#ggplot(subset(combined_df, Id=="1503960366", ["TotalSteps", "Calories"]), aes(x=TotalSteps)) + geom_line() 
+       
+ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y=TotalTimeInBed)) + geom_point()
+
+glimpse(combined_df)
+
+# Explore weight_log_info
+
+#Check head
+head(weight_log_info)
+
+#Check nulls - 65
+sum(is.na(weight_log_info))
+
+# Check nulls for column Fat - 65
+sum(is.na(weight_log_info$Fat))
+
+# Check row - 67
+nrow(weight_log_info)
+
+# Check distinct IDs - 8
+n_distinct(weight_log_info$Id)
+
+# Check IsManualReport boolean count
+# is TRUE = 41
+sum(weight_log_info$IsManualReport==TRUE)
+# is FALSE = 26
+sum(weight_log_info$IsManualReport==FALSE)
