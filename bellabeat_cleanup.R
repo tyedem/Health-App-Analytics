@@ -158,6 +158,9 @@ write_csv(minute_steps_wide, file="/Users/tyesondemets/Desktop/Git/Health-App-Us
 write_csv(sleep_day, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/sleepDay_dt.csv")
 write_csv(weight_log_info, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/weightLogInfo_dt.csv")
 
+
+# Exploratory Analysis
+
 # Explore daily_activity
 
 #Check head
@@ -168,6 +171,9 @@ colnames(daily_activity)
 
 # Check distinct IDs - 33
 n_distinct(daily_activity$Id)
+
+# Check duplicates
+sum(duplicated(daily_activity))
 
 # Check number of rows - 940
 nrow(daily_activity)
@@ -216,6 +222,8 @@ minute_mets_narrow %>%
 #Visualize daily_activity
 ggplot(data=daily_activity, aes(x=TotalSteps, y=SedentaryMinutes)) + geom_point()
 
+ggplot(data=daily_activity, aes(x=TotalSteps, y=Calories)) + geom_point()
+
 # Visualize sleep_day
 ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y=TotalTimeInBed)) + geom_point()
 
@@ -229,7 +237,7 @@ combined_df <- merge(daily_activity, sleep_day, by="Id")
 nrow(combined_df)
 
 # Merge datasets - combined_df, minute_mets_narrow
-combined_df <- merge(combined_df, minute_mets_narrow, by="Id")
+#combined_df <- merge(combined_df, minute_mets_narrow, by="Id")
 
 # Check distinct IDs - 24
 n_distinct(combined_df$Id)
@@ -262,8 +270,25 @@ nrow(weight_log_info)
 # Check distinct IDs - 8
 n_distinct(weight_log_info$Id)
 
+# Check duplicates
+sum(duplicated(weight_log_info))
+
 # Check IsManualReport boolean count
 # is TRUE = 41
 sum(weight_log_info$IsManualReport==TRUE)
 # is FALSE = 26
 sum(weight_log_info$IsManualReport==FALSE)
+
+# Drop Fat column
+na.omit(weight_log_info)
+
+#View dataset
+View(weight_log_info)
+
+# Check summary stats
+weight_log_info %>% 
+  select(Fat,
+         BMI,
+         WeightKg,
+         WeightPounds) %>% 
+  summary()
