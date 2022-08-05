@@ -15,6 +15,9 @@ library(flipTime)
 
 # Load CSVs
 daily_activity <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailyActivity_merged.csv")
+daily_calories <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailyCalories_merged.csv")
+daily_intensities <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailySteps_merged.csv")
+daily_steps <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailyIntensities_merged.csv")
 heartrate_seconds <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/heartrate_seconds_merged.csv")
 hourly_calories <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/hourlyCalories_merged.csv")
 hourly_intensities <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/hourlyIntensities_merged.csv")
@@ -31,6 +34,10 @@ sleep_day <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytic
 weight_log_info <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/weightLogInfo_merged.csv")
 
 # Check head
+head(daily_activity)
+head(daily_calories)
+head(daily_intensities)
+head(daily_steps)
 head(heartrate_seconds)
 head(hourly_calories)
 head(hourly_intensities)
@@ -47,6 +54,7 @@ head(sleep_day)
 head(weight_log_info)
 
 # Glimpse
+glimpse(daily_activity)
 glimpse(heartrate_seconds)
 glimpse(hourly_calories)
 glimpse(hourly_intensities)
@@ -63,6 +71,10 @@ glimpse(sleep_day)
 glimpse(weight_log_info)
 
 # Skim without charts
+skim_without_charts(daily_activity)
+skim_without_charts(daily_calories)
+skim_without_charts(daily_intensities)
+skim_without_charts(daily_steps)
 skim_without_charts(heartrate_seconds)
 skim_without_charts(hourly_calories)
 skim_without_charts(hourly_intensities)
@@ -79,6 +91,10 @@ skim_without_charts(sleep_day)
 skim_without_charts(weight_log_info)
 
 # Check column names
+colnames(daily_activity)
+colnames(daily_calories)
+colnames(daily_intensities)
+colnames(daily_steps)
 colnames(heartrate_seconds)
 colnames(hourly_calories)
 colnames(hourly_intensities)
@@ -95,9 +111,14 @@ colnames(sleep_day)
 colnames(weight_log_info)
 
 # Check nulls
-sum(is.na(daily_activity_df))
+sum(is.na(daily_activity))
+sum(is.na(daily_calories))
+sum(is.na(daily_steps))
+sum(is.na(heartrate_seconds))
 sum(is.na(hourly_calories))
 sum(is.na(hourly_intensities))
+sum(is.na(hourly_steps))
+sum(is.na(hourly_calories))
 sum(is.na(hourly_steps))
 sum(is.na(minute_calories_narrow))
 sum(is.na(minute_calories_wide))
@@ -110,23 +131,12 @@ sum(is.na(minute_steps_wide))
 sum(is.na(sleep_day))
 sum(is.na(weight_log_info))
 
-# View DataFrame
-View(heartrate_seconds)
-View(hourly_calories)
-View(hourly_intensities)
-View(hourly_steps)
-View(minute_calories_narrow)
-View(minute_calories_wide)
-View(minute_intensities_narrow)
-View(minute_intensities_wide)
-View(minute_mets_narrow)
-View(minute_sleep)
-View(minute_steps_narrow)
-View(minute_steps_wide)
-View(sleep_day)
-View(weight_log_info)
 
 # Convert time column to datetime - Reference - https://www.displayr.com/r-date-conversion/
+daily_activity$ActivityDate <- AsDateTime(daily_activity$ActivityDate)
+daily_calories$ActivityDay <- AsDateTime(daily_calories$ActivityDay)
+daily_intensities$ActivityDay <- AsDateTime(daily_intensities$ActivityDay)
+daily_steps$ActivityDay <- AsDateTime(daily_steps$ActivityDay)
 heartrate_seconds$Time <- AsDateTime(heartrate_seconds$Time)
 hourly_calories$ActivityHour <- AsDateTime(hourly_calories$ActivityHour)
 hourly_intensities$ActivityHour <- AsDateTime(hourly_intensities$ActivityHour)
@@ -143,7 +153,11 @@ sleep_day$SleepDay <- AsDateTime(sleep_day$SleepDay)
 weight_log_info$Date <- AsDateTime(weight_log_info$Date)
 
 # Write to csv to load in Big Query database
-write_csv(heartrate_seconds, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/heartrate_seconds_dt.csv")
+write_csv(daily_activity, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/dailyActivity_dt.csv")
+write_csv(daily_calories, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/dailyCalories_dt.csv")
+write_csv(daily_intensities, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/dailyIntensities_dt.csv")
+write_csv(daily_steps, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/dailySteps_dt.csv")
+write_csv(heartrate_seconds, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/heartrateSeconds_dt.csv")
 write_csv(hourly_calories, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/hourlyCalories_dt.csv")
 write_csv(hourly_intensities, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/hourlyIntensities_dt.csv")
 write_csv(hourly_steps, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Datetime-Adjusted/hourlySteps_dt.csv")
@@ -220,9 +234,9 @@ minute_mets_narrow %>%
 # Exploring visualizations
 
 #Visualize daily_activity
-ggplot(data=daily_activity, aes(x=TotalSteps, y=SedentaryMinutes)) + geom_point()
+#ggplot(data=daily_activity, aes(x=TotalSteps, y=SedentaryMinutes)) + geom_point() + geom_smooth(method=lm)
 
-ggplot(data=daily_activity, aes(x=TotalSteps, y=Calories)) + geom_point()
+ggplot(data=daily_activity, aes(x=TotalSteps, y=Calories)) + geom_point() + geom_smooth(method=lm)
 
 # Visualize sleep_day
 ggplot(data=sleep_day, aes(x=TotalMinutesAsleep, y=TotalTimeInBed)) + geom_point()
@@ -292,3 +306,20 @@ weight_log_info %>%
          WeightKg,
          WeightPounds) %>% 
   summary()
+
+# Explore hourly_calories
+head(hourly_calories)
+
+#Check nulls
+sum(is.na(hourly_calories))
+
+# Check duplicates
+sum(duplicated(hourly_calories))
+
+# Check rows
+nrow(hourly_calories)
+
+glimpse(hourly_calories)
+
+ggplot(hourly_calories, aes(x=ActivityHour, y=Calories)) + geom_point()
+

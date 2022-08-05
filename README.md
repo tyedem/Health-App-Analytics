@@ -2,7 +2,7 @@
 
 ![Fitbit](Images/pexels-joshua-miranda-fitbit.png)
 
-*[Close-Up of a Smartphone Displaying a Fitness App Statistics](https://www.pexels.com/photo/close-up-of-a-smartphone-screen-displaying-a-fitness-app-statistics-6298479/) | [Pexels Licensed](https://www.pexels.com/license/)*
+*[Close-Up of a Smartphone Displaying a Fitness App's Statistics](https://www.pexels.com/photo/close-up-of-a-smartphone-screen-displaying-a-fitness-app-statistics-6298479/) | [Pexels Licensed](https://www.pexels.com/license/)*
 
 
 # Description
