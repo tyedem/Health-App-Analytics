@@ -36,8 +36,11 @@ FROM
 -- 4) daily_steps
 
 -- MIN/MAX datetime values
-SELECT MIN(ActivityDay) AS MinDate, MAX(ActivityDay) AS MaxDate
-FROM `linear-freehold-354220.bellabeat.daily_steps`;
+SELECT 
+    MIN(ActivityDay) AS MinDate, 
+    MAX(ActivityDay) AS MaxDate
+FROM 
+    `linear-freehold-354220.bellabeat.daily_steps`;
 
 
 -- 5) heartrate_seconds

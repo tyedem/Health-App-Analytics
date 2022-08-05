@@ -40,6 +40,23 @@ GROUP BY
 ORDER BY 
    Id DESC
 
+-- AVG queries
+
+SELECT 
+  Id,
+  AVG(Calories) AS Calories,
+  AVG(TotalSteps) AS TotalSteps,
+  AVG(SedentaryMinutes) AS SedentaryMinutes,
+  AVG(LightlyActiveMinutes) AS LightlyActiveMinutes,
+  AVG(FairlyActiveMinutes) AS FairlyActiveMinutes,
+  AVG(VeryActiveMinutes) AS VeryActiveMinutes
+FROM 
+  `linear-freehold-354220.bellabeat.daily_activity`
+GROUP BY 
+  Id
+ORDER BY 
+   Id DESC
+
 -- 2) daily_calories
 
 --SUM queries
@@ -71,8 +88,6 @@ GROUP BY
 ORDER BY 
    Id DESC
 
---Observations: The daily_intensities table appears consistent with the SUM of the daily_activity table without the join with daily_calories.
-
 -- 4) daily_steps
 
 --SUM queries
@@ -87,7 +102,7 @@ GROUP BY
 ORDER BY
   Id DESC
 
---Observations: The daily_intensities table appears consistent with the SUM of the daily_activity table without the join with daily_calories.
+--Observations: The SUM of daily_intensities table appears consistent with the SUM of the daily_activity table
 
 -- 5) heartrate_seconds
 
