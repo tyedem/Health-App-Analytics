@@ -40,51 +40,6 @@ GROUP BY
 ORDER BY 
    Id DESC
 
--- SUM query with JOIN on daily_calories
-
---CREATE VIEW `linear-freehold-354220.bellabeat.sum_activity_calories` AS
-SELECT 
-  daily_activity.Id,
-  SUM(daily_calories.Calories) AS Calories,
-  SUM(TotalSteps) AS TotalSteps,
-  SUM(SedentaryMinutes) AS SedentaryMinutes,
-  SUM(LightlyActiveMinutes) AS LightlyActiveMinutes,
-  SUM(FairlyActiveMinutes) AS FairlyActiveMinutes,
-  SUM(VeryActiveMinutes) AS VeryActiveMinutes
-FROM 
-  `linear-freehold-354220.bellabeat.daily_activity` AS daily_activity
-JOIN
-  `linear-freehold-354220.bellabeat.daily_calories` AS daily_calories
-  ON
-  daily_activity.Id=daily_calories.Id
-GROUP BY 
-  Id
-ORDER BY 
-  Calories DESC;
-
-  -- Alternative ORDER BY view below:
-
-  SELECT 
-  daily_activity.Id,
-  SUM(daily_calories.Calories) AS Calories,
-  SUM(TotalSteps) AS TotalSteps,
-  SUM(SedentaryMinutes) AS SedentaryMinutes,
-  SUM(LightlyActiveMinutes) AS LightlyActiveMinutes,
-  SUM(FairlyActiveMinutes) AS FairlyActiveMinutes,
-  SUM(VeryActiveMinutes) AS VeryActiveMinutes
-FROM 
-  `linear-freehold-354220.bellabeat.daily_activity` AS daily_activity
-JOIN
-  `linear-freehold-354220.bellabeat.daily_calories` AS daily_calories
-  ON
-  daily_activity.Id=daily_calories.Id
-GROUP BY 
-  Id
-ORDER BY 
-  Id DESC
-
--- Observations: When comparing these query outputs, the FitBit appears to inconsistently collect data between the daily_activity and daily_calories tables. The SUMs of each variable in both tables do not match. There is no description as to how the data is collected for either of these tables. They both share the same date range and distinct IDs, thus data collection methods for these tables are questionable.
-
 -- 2) daily_calories
 
 --SUM queries
@@ -97,7 +52,7 @@ FROM
 GROUP BY 
   Id
 ORDER BY 
-  Id DESC;
+  Calories DESC;
 
 -- 3) daily_intensities
 
@@ -159,6 +114,36 @@ ORDER BY
 -- 16) minute_steps_wide
 
 -- 17) sleep_day
+
+--SUM query
+
+SELECT
+  Id,
+  SUM(TotalSleepRecords) AS TotalSleepRecords,
+  SUM(TotalMinutesAsleep) AS TotalMinutesAsleep,
+  SUM(TotalTimeInBed) AS TotalTimeInBed
+FROM
+  `linear-freehold-354220.bellabeat.sleep_day`
+GROUP BY
+  Id
+ORDER BY 
+  TotalSleepRecords DESC;
+
+-- Observations: MAX(TotalSleepRecords) = 39. MIN(TotalSleepRecords) = 1. There appears to be opportunity optimize the sleep records feature since 
+
+SELECT
+  Id,
+  SUM(TotalSleepRecords) AS SumTotalSleepRecords
+FROM
+  `linear-freehold-354220.bellabeat.sleep_day`
+GROUP BY
+  Id
+HAVING
+  SumTotalSleepRecords >= 10
+ORDER BY
+  SumTotalSleepRecords DESC;
+
+--Observations: There are only 15 users who have >= 10 TotalSleepRecords. About 60% of sampled users.
 
 -- 18) weight_log_info
 
