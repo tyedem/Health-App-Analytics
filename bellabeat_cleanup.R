@@ -18,24 +18,24 @@ library(lubridate)
 library(flipTime)
 
 # Load CSVs
-daily_activity <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailyActivity_merged.csv")
-daily_calories <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailyCalories_merged.csv")
-daily_intensities <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailySteps_merged.csv")
-daily_steps <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/dailyIntensities_merged.csv")
-heartrate_seconds <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/heartrate_seconds_merged.csv")
-hourly_calories <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/hourlyCalories_merged.csv")
-hourly_intensities <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/hourlyIntensities_merged.csv")
-hourly_steps <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/hourlySteps_merged.csv")
-minute_calories_narrow <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/minuteCaloriesNarrow_merged.csv")
-minute_calories_wide <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/minuteCaloriesWide_merged.csv")
-minute_intensities_narrow <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/minuteIntensitiesNarrow_merged.csv")
-minute_intensities_wide <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/minuteIntensitiesWide_merged.csv")
-minute_mets_narrow <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/minuteMETsNarrow_merged.csv")
-minute_sleep <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/minuteSleep_merged.csv")
-minute_steps_narrow <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/minuteStepsNarrow_merged.csv")
-minute_steps_wide <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/minuteStepsWide_merged.csv")
-sleep_day <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/sleepDay_merged.csv")
-weight_log_info <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/weightLogInfo_merged.csv")
+daily_activity <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/dailyActivity_merged.csv")
+daily_calories <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/dailyCalories_merged.csv")
+daily_intensities <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/dailySteps_merged.csv")
+daily_steps <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/dailyIntensities_merged.csv")
+heartrate_seconds <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/heartrate_seconds_merged.csv")
+hourly_calories <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/hourlyCalories_merged.csv")
+hourly_intensities <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/hourlyIntensities_merged.csv")
+hourly_steps <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/hourlySteps_merged.csv")
+minute_calories_narrow <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/minuteCaloriesNarrow_merged.csv")
+minute_calories_wide <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/minuteCaloriesWide_merged.csv")
+minute_intensities_narrow <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/minuteIntensitiesNarrow_merged.csv")
+minute_intensities_wide <-read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/minuteIntensitiesWide_merged.csv")
+minute_mets_narrow <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/minuteMETsNarrow_merged.csv")
+minute_sleep <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/minuteSleep_merged.csv")
+minute_steps_narrow <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/minuteStepsNarrow_merged.csv")
+minute_steps_wide <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/minuteStepsWide_merged.csv")
+sleep_day <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/sleepDay_merged.csv")
+weight_log_info <- read_csv("/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Source/weightLogInfo_merged.csv")
 
 # Check head
 head(daily_activity)
@@ -245,15 +245,41 @@ nrow(daily_activity)
 # Select summary stats - daily_activity stats
 daily_activity %>% 
   select(TotalSteps,
+         Calories,
          TotalDistance,
          SedentaryMinutes) %>%
   summary()
 
 # Add column for day of week - Reference - https://www.statology.org/r-day-of-week/
 daily_activity$ActivityDay <- wday(daily_activity$ActivityDate, label=TRUE, abbr=FALSE)
+sleep_day$WeekDay <- wday(sleep_day$SleepDay, label=TRUE, abbr=FALSE)
+hourly_steps$Day <- wday(hourly_steps$ActivityHour, label=TRUE, abbr=FALSE)
+hourly_intensities$Day <- wday(hourly_intensities$ActivityHour, label=TRUE, abbr=FALSE)
+hourly_calories$Day <- wday(hourly_calories$ActivityHour, label=TRUE, abbr=FALSE)
+hourly_steps$Day <- wday(hourly_steps$ActivityHour, label=TRUE, abbr=FALSE)
+heartrate_seconds$Day <- wday(heartrate_seconds$Time, label=TRUE, abbr=FALSE)
 
-# Add column for hour of day
-daily_activity$ActivityHour <- hour(daily_activity$ActivityDate)
+# Add column for sum of all minutes
+
+
+# Add column for hour
+hourly_steps$Hour <- hour(hourly_steps$ActivityHour)
+hourly_intensities$Hour <- hour(hourly_intensities$ActivityHour)
+hourly_calories$Hour <- hour(hourly_calories$ActivityHour)
+hourly_steps$Hour <- hour(hourly_steps$ActivityHour)
+heartrate_seconds$Hour <- hour(heartrate_seconds$Time)
+
+# Add column for 
+
+
+# Write updated csv for Tableau
+write_csv(daily_activity, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/daily_activity_tableau.csv")
+write_csv(hourly_steps, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/hourly_steps_tableau.csv")
+write_csv(hourly_intensities, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/hourly_intensities_tableau.csv")
+write_csv(hourly_calories, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/hourly_calories_tableau.csv")
+write_csv(hourly_steps, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/hourly_steps_tableau.csv")
+write_csv(sleep_day, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/sleep_day_tableau.csv")
+write_csv(heartrate_seconds, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/heartrate_seconds_tableau.csv")
 
 # Explore sleep_day
 
@@ -303,7 +329,10 @@ ggplot(data=daily_activity, aes(x=TotalSteps, y=Calories, color=Calories)) +
   scale_colour_gradientn(colors=colors) +
   geom_smooth(method=lm)
 
-ggplot(data=daily_activity, aes(x=TotalSteps, y=Calories, color=Calories, group=Id)) + 
+daily_activity %>% 
+  group_by(Id) %>% 
+  summarize(SumTotalSteps = sum(TotalSteps),SumCalories = sum(Calories)) %>% 
+  ggplot(data=daily_activity(aes(x=SumTotalSteps, y=SumCalories, color=SumCalories, group=Id)) + 
   geom_point() +
   scale_colour_gradientn(colors=colors)
 
