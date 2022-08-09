@@ -59,6 +59,16 @@ ORDER BY
 
 -- 2) daily_calories
 
+SELECT
+    Id,
+    SUM(Calories) AS Calories
+FROM 
+  `linear-freehold-354220.bellabeat.daily_calories`
+GROUP BY 
+  Id
+ORDER BY 
+   Id DESC
+
 --SUM queries
 
 SELECT 

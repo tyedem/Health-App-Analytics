@@ -267,10 +267,7 @@ hourly_steps$Hour <- hour(hourly_steps$ActivityHour)
 hourly_intensities$Hour <- hour(hourly_intensities$ActivityHour)
 hourly_calories$Hour <- hour(hourly_calories$ActivityHour)
 hourly_steps$Hour <- hour(hourly_steps$ActivityHour)
-heartrate_seconds$Hour <- hour(heartrate_seconds$Time)
-
-# Add column for 
-
+heartrate_seconds$Hour <- hour(heartrate_seconds$Time
 
 # Write updated csv for Tableau
 write_csv(daily_activity, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/daily_activity_tableau.csv")
@@ -313,10 +310,48 @@ minute_mets_narrow %>%
          METs) %>% 
   summary()
 
+
+# Calculate % of Active Minutes
+TotalSedentaryMins <- sum(daily_activity$SedentaryMinutes)
+
+TotalLightlyActiveMins <- sum(daily_activity$LightlyActiveMinutes)
+
+TotalFairlyActiveMins <- sum(daily_activity$FairlyActiveMinutes)
+
+TotalVeryActiveMins <- sum(daily_activity$VeryActiveMinutes)
+
+TotalActiveMins <- sum(TotalFairlyActiveMins + TotalLightlyActiveMins + TotalSedentaryMins + TotalVeryActiveMins)
+
+SedentaryMinPercent<- round(TotalSedentaryMins/TotalActiveMins * 100, 2)
+LightlyMinPercent<- round(TotalLightlyActiveMins/TotalActiveMins * 100, 2)
+FairlyMinPercent<- round(TotalFairlyActiveMins/TotalActiveMins * 100, 2)
+VeryMinPercent<- round(TotalVeryActiveMins/TotalActiveMins * 100, 2)
+
+# Validate that percentages sum to 100%
+PercentTotal<- sum(SedentaryMinPercent+LightlyMinPercent+FairlyMinPercent+VeryMinPercent)
+
+activityMinsPercent_df <- data.frame(ActivityType = c(
+  "Sedentary", 
+  "LightlyActive", 
+  "FairlyActive", 
+  "VeryActive"),
+  Percent = c(SedentaryMinPercent, LightlyMinPercent, FairlyMinPercent, VeryMinPercent)
+  )
+
+# Write to csv for Tableau pie chart
+write_csv(activityMinsPercent_df, file="/Users/tyesondemets/Desktop/Git/Health-App-Usage-Analytics/Resources/Tableau/ActivityMinsPercent_tableau.csv")
+
+
+# Create Bar plot to prep for pie chart - Reference - http://www.sthda.com/english/wiki/ggplot2-pie-chart-quick-start-guide-r-software-and-data-visualization
+activity_bp <- ggplot(activityMinsPercent_df, aes(x="", y=Percent, fill=ActivityType)) +
+  geom_bar(width=1, stat="identity")
+
+activity_pie <- activity_bp + coord_polar("y", start=0) + geom_text(label = Percent, check_overlap = TRUE)
+activity_pie
+
 # Exploring visualizations
 
 #Visualize daily_activity
-#ggplot(data=daily_activity, aes(x=TotalSteps, y=SedentaryMinutes)) + geom_point() + geom_smooth(method=lm)
 
 # Assign color_range and colors variables for plotting
 color_range <- colorRampPalette(c("#0071bc","#cd2026"))
