@@ -8,6 +8,8 @@
 # Description
 This is a capstone project for [Coursera's Google Data Analytics Professional Certificate](https://www.coursera.org/professional-certificates/google-data-analytics?) where I am analyzing [FitBit Fitness Tracker Data](https://www.kaggle.com/datasets/arashnic/fitbit) sourced from [Kaggle](https://www.kaggle.com/).
 
+This project will follow structured approach of Ask, Prepare, Process, Analyze, Share, Act
+
 ## Scenario
 I am a junior data analyst working on the marketing analyst team at Bellabeat, a high-tech manufacturer of health-focused products for women. Bellabeat is a successful small company, but they have the potential to become a larger player in the global [smart device](https://en.wikipedia.org/wiki/Smart_device) market. Urška Sršen, Cofounder and Chief Creative Officer of Bellabeat, believes that analyzing smart device fitness data could help unlock new growth opportunities for the company. You have been asked to focus on one of Bellabeat’s products and analyze smart device data to gain insight into how consumers are using their smart devices. The insights you discover will then help guide marketing strategy for the company. You will present your analysis to the Bellabeat executive team along with your high-level recommendations for Bellabeat’s marketing strategy.
 
@@ -51,15 +53,15 @@ The integrity of the data was managed via SQL queries to validate the date range
 3. **Outliers** - R Boxplots were created to investigate whether problematic outliers existed. None were identified
 4. **Common Variable Analysis** - SQL `SUM` queries were run on datasets which contained common variables to validate whether they returned the same outputs for consistency in data between datasets. No inconsistencies identified.
 
-# **Analysis**
+# **Analyze**
 
-Below are some R and Tableau visualizations. The Tableau visualizations are screenshots from the presentation developed in Tableau.
+Below are some R and Tableau visualizations. The Tableau visualizations are screenshots from the presentation developed in Tableau, which has been linked with this repository. Key findings are noted in the slides below.
 
 ## Total Steps vs. Calories
 ![Steps-Calories](Images/TotalStepsVsCalories.png)
 
 ## Total Minutes Asleep vs. Total Time in Bed
-![Asleep-InBed](Images/sleep_day-TotalMinutesAsleep-TotalTimeinBed.png)
+![Asleep-InBed](Images/sleep_day-TotalMinutesAsleep-TotalTimeInBed.png)
 
 ## Steps vs. Calories
 
@@ -80,7 +82,16 @@ Below are some R and Tableau visualizations. The Tableau visualizations are scre
 
 ![Logged-User-Activity](Images/LoggedUserActivity.png)
 
-# Summary & Recommendations
-Overall, there are opportunities to increase user engagement. Over 4/5 of the time, users are sedentary and are only active less than 1/5 of the time. There are also opportunities to reduce friction with the lesser-used features in sleep, heartrate and weight monitoring. See slide below for specifics:
+
+# **Share**
+
+The data visualization software platform Tableau was used to generate the presentation and dashboards below.
+
+## 1. [Presentation](https://public.tableau.com/app/profile/tyeson.demets/viz/HealthAppAnalyticsPresentation/Presentation#1) 
+## 2. [Dashboard](https://public.tableau.com/app/profile/tyeson.demets/viz/HealthAppAnalyticsDashboard/Dashboard)
+
+# **Act**
+
+Overall, there are opportunities to increase user engagement. Over 4/5 of the time users are sedentary and only 1/5 of the time are they active. There are also opportunities to reduce friction with the lesser-used features in sleep, heartrate and weight monitoring. The slide below details my proposed recommendations.
 
 ![recommendations](Images/recommendations.png) 
