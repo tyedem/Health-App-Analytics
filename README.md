@@ -27,7 +27,7 @@ The data has been warehoused in BigQuery. Some datasets could not immediately be
 ## **Organization**
 The data is organized in long format which is ideal for performing advanced statistical analysis and graphing. Every dataset contains the Id variable, which serves as the primary key to link all datasets together.
 
-## **Bias & Credibility - Reliability, Original, Comprehensive, Current, Cited (ROCCC)**
+## **Bias & Credibility - Reliable, Original, Comprehensive, Current, Cited (ROCCC)**
 Using the ROCCC criteria below we can determine the bias and credibility of the dataset using a ‘high-medium-low-fail’ scale point system. Refer to the score key below. If the score is not perfect then any missing points must be communicated to all stakeholders to ensure concerns are appropriately addressed before proceeding. Depending on the context of the project an overall high score may not be required.
 
 ![ROCCC](Images/ROCCC.png)
